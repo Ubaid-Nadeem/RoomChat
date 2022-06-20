@@ -38,10 +38,6 @@ db.on('open', function () {
     console.log('Connected to MOngoDB');
 });
 
-app.get('/', (req, res) => {
-    console.log('hello world')
-})
-
 
 
 io.on('connection', (socket) => {
@@ -56,20 +52,7 @@ io.on('connection', (socket) => {
 
     socket.emit('getRooms', Room);
 
-    socket.on('join_room', ({ room, name }) => {
-        // socket.join(room);
-        // const sendRoomData = {
-        //     Message: 'join room ',
-        //     Time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
-        //     Room: room,
-        //     Author: name
-        // }
-
-        // socket.to(room).emit('new_user', sendRoomData)
-
-        // console.log(room, name);
-    })
-
+   
     socket.on("message", (data) => {
         console.log(data)
         socket.to(data.room).emit('get_message', data);
