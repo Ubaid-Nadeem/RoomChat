@@ -12,8 +12,16 @@ app.use(bodyparser.urlencoded({ extended: true }))
 app.use(cors());
 const { Server } = require("socket.io");
 
-const io = new Server(http);
-const PORT = process.env.PORT || 300
+const io = new Server();
+
+
+app.set('port', process.env.PORT || 300);
+const server = app.listen(app.get('port'), () => {
+    console.log(`server listen ${server.address().port}`);
+});
+
+io.attach(server)
+
 
 mongoose.connect('mongodb+srv://ubaidnadeem:ubaid12345@testdb.pnswp.mongodb.net/NEW_DB?retryWrites=true&w=majority');
 
@@ -101,4 +109,4 @@ io.on('connection', (socket) => {
 
 });
 
-http.listen(PORT);
+// http.listen(PORT);
