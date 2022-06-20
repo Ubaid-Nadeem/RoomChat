@@ -30,6 +30,10 @@ db.on('open', function () {
     console.log('Connected to MOngoDB');
 });
 
+app.get('/', (req, res) => {
+    console.log('hello world')
+})
+
 
 
 io.on('connection', (socket) => {
