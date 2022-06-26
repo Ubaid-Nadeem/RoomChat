@@ -45,16 +45,16 @@ io.on('connection', (socket) => {
 
     socket.on('create_room', ({ RoomName, Name, ID }) => {
         socket.join(ID);
-        Room.push({ Name, RoomName, ID })
-        console.log(Room);
+        Room.push({ Name, RoomName, ID, Member: 1 })
+        // console.log(Room);
     })
 
 
     socket.emit('getRooms', Room);
 
-   
+
     socket.on("message", (data) => {
-        console.log(data)
+        // console.log(data)
         socket.to(data.room).emit('get_message', data);
 
     })
@@ -70,15 +70,25 @@ io.on('connection', (socket) => {
 
         function check(room) {
             Room.forEach((data, index) => {
-                console.log(data)
+                // console.log(data)
                 if (data.ID == room) {
-                    console.log(room)
+                    // console.log(room)
                     socket.emit('joinRequest_status', { status: true, data: data })
                     socket.join(room);
+                    data.Member = data.Member++
+                    socket.to(room).emit('Members', data.Member)
                     checker = true
+                    let newMember = {
+                        message: `${name} joined a Room`,
+                        author: name,
+                        room: room,
+                        time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
+                        status: 'joined'
+                    }
+                    socket.to(room).emit('joinNewMember',newMember);
                 }
                 if (++index == Room.length && checker == false) {
-                    console.log('done')
+                    // console.log('done')
                     socket.emit('joinRequest_reject', { status: false })
                 }
             })
