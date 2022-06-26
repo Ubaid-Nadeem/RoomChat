@@ -40,6 +40,10 @@ db.on('open', function () {
 
 
 
+
+
+
+
 io.on('connection', (socket) => {
     console.log('connected');
 
@@ -75,8 +79,8 @@ io.on('connection', (socket) => {
                     // console.log(room)
                     socket.emit('joinRequest_status', { status: true, data: data })
                     socket.join(room);
-                    data.Member = data.Member++
-                    socket.to(room).emit('Members', data.Member)
+                    // data.Member = data.Member++
+                    // socket.to(room).emit('Members', data.Member)
                     checker = true
                     let newMember = {
                         message: `${name} joined a Room`,
